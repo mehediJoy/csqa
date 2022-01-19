@@ -14,6 +14,7 @@ class User(AbstractUser):
     points = models.IntegerField(default=0)
     adjustment_points = models.IntegerField(default=0)
     is_shadow_banned = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
 
     def update_points(self):
         answers = self.answer_set.filter(~Q(points = 0))

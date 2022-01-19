@@ -111,7 +111,8 @@ def newView(request):
 
 def answerView(request, id):
     current_user = request.user
-
+    verification = False
+    
     if not current_user.is_authenticated:
         return HttpResponseRedirect('/accounts/login')
     if not request.method == 'POST':
@@ -119,10 +120,13 @@ def answerView(request, id):
     form = AnswerForm(request.POST)
     if not form.is_valid():
         return HttpResponseRedirect(f'/question/{id}')
+    if current_user.is_teacher:
+        verification = True
     a = Answer(
         user_id = current_user.id,
         question_id = id,
-        text = form.cleaned_data['text']
+        text = form.cleaned_data['text'],
+        verified = verification
     )
     a.save()
     return HttpResponseRedirect(f'/question/{id}')

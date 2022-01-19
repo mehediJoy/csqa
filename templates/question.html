@@ -119,7 +119,7 @@ Vue.component('answer', {
     <div class='answer-block'>
       <div class="answer-text" v-html="answer.text_html"></div>
       <div class='text-secondary answer-sub'>
-        <span>[[ answer.user ]]</span>
+        <span>[[ answer.user ]] <span v-if="answer.verified">✔</span>
         <span class="separator">|</span>
         <span>[[ answer.x_ago ]]</span>
         <span class="separator">|</span>

@@ -74,7 +74,8 @@ class Answer(models.Model):
     modified = models.DateTimeField()
     points = models.IntegerField(default=0)
     hidden = models.BooleanField(default=False)
-
+    verified = models.BooleanField(default=False)
+    
     @property
     def x_ago(self):
         diff = timezone.now() - self.created
@@ -117,7 +118,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ('text_html', 'x_ago', 'user', 'id', 'points', 'hidden')
+        fields = ('text_html', 'x_ago', 'user', 'id', 'points', 'hidden', 'verified')
 
     def get_text_html(self, obj):
         return urlize(escape(obj.text))
