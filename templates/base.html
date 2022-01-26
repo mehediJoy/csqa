@@ -1,6 +1,6 @@
 {% load static %}
 
-<html>
+{% comment %} <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -56,4 +56,97 @@
         axios.defaults.xsrfCookieName = 'csrftoken';
         axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
     </script>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Study Forum</title>
+    {% comment %} <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> {% endcomment %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title>{% block title %}Study Forum{% endblock %}</title>
+  </head>
+
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="{% static '/images/forum.png' %}" width="112" height="28" />
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a href="/" class="navbar-item"> Home </a>
+          {% if current_user.is_authenticated %}
+          <a href="/question/new" class="navbar-item"> Ask </a>
+          {% endif %}
+          <a href="/leaderboard" class="navbar-item"> Leaderboard </a>
+          <a href="/about" class="navbar-item"> About </a>
+        </div>
+
+        <div class="navbar-end">
+          {% if current_user.is_authenticated %}
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> {{current_user.username}} {% if current_user.is_teacher %}Teacher✅{% endif %} </a>
+            <div class="navbar-dropdown">
+              <p class="navbar-item"> {{current_user.points}} points </p>
+              <hr class="navbar-divider" />
+              <a href="{% url 'my-questions' %}" class="navbar-item"> My Questions </a>
+              <a href="{% url 'my-answers' %}" class="navbar-item"> My Answers </a>
+              <a href="/accounts/logout/" class="navbar-item"> Logout </a>
+            </div>
+          </div>
+          {% else %}
+          <div class="navbar-item">
+            <div class="buttons">
+              <a href="/accounts/signup/" class="button is-primary"><strong>Sign up</strong></a>
+              <a href="/accounts/login/" class="button is-light"> Log in </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <div class="container is-fluid">
+      <div class="container is-max-desktop">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <script>
+        axios.defaults.xsrfCookieName = 'csrftoken';
+        axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get all "navbar-burger" elements
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
+
+        // Check if there are any navbar burgers
+        if ($navbarBurgers.length > 0) {
+          // Add a click event on each of them
+          $navbarBurgers.forEach((el) => {
+            el.addEventListener("click", () => {
+              // Get the target from the "data-target" attribute
+              const target = el.dataset.target;
+              const $target = document.getElementById(target);
+
+              // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+              el.classList.toggle("is-active");
+              $target.classList.toggle("is-active");
+            });
+          });
+        }
+      });
+    </script>
+  </body>
 </html>

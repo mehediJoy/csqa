@@ -1,35 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="answers">
-{% for answer in page_obj %}
-    <p style="margin-bottom: 1">
-        <a href="/question/{{answer.question.id}}">{{ answer.question.title }} <span class="text-secondary num-answers">({{ answer.question.num_answers }} comments)</span></a>
-    </p>
-    <div class='answer-block'>
-      <div class='text-secondary' style="font-size: 14px">{{ answer.user }}<span style="margin-right: 6px; margin-left: 6px;">|</span></span>{{ answer.x_ago }}</div>
-      <div style="margin-bottom: 20px">{{ answer.text | urlize }}</div>
-    </div>
-    <hr/>
-{% endfor %}
-</div>
+
+<article class="media">
+    <div id="question" class="media-content">
+        {% for answer in page_obj %}
+        <div class="content">
+            <p>
+                  <strong class="title">{{ answer.question.title }}</strong>
+                  <br />
+                  ({{ answer.question.num_answers }} comments)
+                </p>
+            </div>
+            <article class="media" style="margin-left: 50px">
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <strong>{{ answer.user }} {% if answer.verified %}✔{% endif %}</strong>
+                      <br />
+                      {{ answer.text | urlize }}
+                      <br />
+                      <small>
+                        {{ answer.x_ago }}
+                      </small>
+                    </p>
+                  </div>
+                </div>
+            </article>
+            <hr>
+            {% endfor %}
+        </div>
+    </article>
+
 {% if not answers_exist %}
-<p>You haven't answered any questions yet.</p>
+<p class="subtitle">You haven't answered any questions yet.</p>
 {% else %}
-<div class="pagination" style="margin-bottom: 3; margin-top: 3">
-  <span class="step-links">
-      {% if page_obj.has_previous %}
-          <a href="?page={{ page_obj.previous_page_number }}">&laquo; previous</a>
-      {% endif %}
-
-      <span class="current text-secondary">
-            page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
-
-      {% if page_obj.has_next %}
-          <a href="?page={{ page_obj.next_page_number }}">next &raquo;</a>
-      {% endif %}
-  </span>
-</div>
+<nav class="pagination is-centered" role="navigation" aria-label="pagination" style="margin-bottom: 10px;">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="pagination-previous">Previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="pagination-next">Next page</a>
+    {% endif %}
+    <ul class="pagination-list">
+      <p>page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+    </ul>
+</nav>
 {% endif %}
 {% endblock %}

@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     
+    # 3rd Party Apps
     'django.contrib.sites', # for allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    
 ]
 
 MIDDLEWARE = [
@@ -165,3 +167,8 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'users.User'
+
+ACCOUNT_FORMS = {
+    'login': 'users.forms.NewLoginForm',
+    'signup': 'users.forms.NewSignupForm',
+}

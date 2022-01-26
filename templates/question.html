@@ -3,35 +3,32 @@
 {% block title %}{{question.title}} | CSQA{% endblock %}
 
 {% block content %}
-<div id="question">
+<article class="media">
+<div id="question" class="media-content">
 
-<h5>{{question.title}}</h5>
-<div style="margin-bottom: 5px; font-size: 17px; white-space: break-spaces">{{question.body | urlize }}</div>
-<div class='text-secondary' style="font-size: 14px">
-  posted by {{ question.user }}</span><span class="separator">|</span>{{ question.x_ago }}
-  {% if not asked_by_user %}
-  <span class="separator">|</span>
-  <a href="javascript:void(0)" v-on:click="vote('upvote', upvoted, '/question/{{question.id}}/vote')" :class="[[upvoted ? 'done' : '']]" class="text-secondary">upvote</a>
-  <span class="separator">|</span>
-  <a href="javascript:void(0)" v-on:click="vote('downvote', downvoted, '/question/{{question.id}}/vote')" :class="[[downvoted ? 'done' : '']]" class="text-secondary">downvote</a>
-  {% endif %}
-  <span class="separator">|</span>
-  <span>[[points]] points</span>
-</div>
+  <div class="content">
+    <p>
+      <strong>{{ question.user }}</strong>
+      <small>[[points]] points</small>
+      <br />
+      <strong class="title">{{ question.title }}</strong>
+      <br />
+      <br />
+      {{ question.body | urlize }}
+      <br />
+      <small>
+        {% if not asked_by_user %}
+        <a href="javascript:void(0)" v-on:click="vote('upvote', upvoted, '/question/{{question.id}}/vote')" :class="[[upvoted ? 'done' : '']]" class="text-secondary">upvote</a> · 
+        <a href="javascript:void(0)" v-on:click="vote('downvote', downvoted, '/question/{{question.id}}/vote')" :class="[[downvoted ? 'done' : '']]" class="text-secondary">downvote</a> ·
+        {% endif %} 
+        {{ question.x_ago }}
+      </small>
+    </p>
+  </div>
 
-<answer
-  v-if="!allAnswersShown"
-  v-for="answer in visibleAnswers"
-  v-bind:key="answer.id"
-  v-bind:answer="answer"
-></answer>
+<answer v-if="!allAnswersShown" v-for="answer in visibleAnswers" v-bind:key="answer.id" v-bind:answer="answer"></answer>
 
-<answer
-  v-if="allAnswersShown"
-  v-for="answer in answers"
-  v-bind:key="answer.id"
-  v-bind:answer="answer"
-></answer>
+<answer v-if="allAnswersShown" v-for="answer in answers" v-bind:key="answer.id" v-bind:answer="answer"></answer>
 
 <hr class='answer-hr'/>
 <div
@@ -46,16 +43,27 @@
 {% if current_user.is_authenticated %}
 <form action="/question/{{question.id}}/answer" method="post">
   {% csrf_token %}
-  <div class="form-group">
-    <textarea class="form-control" id="text" name="text" rows="7" placeholder="Type your answer here." required></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+  <article class="media">
+    <div class="media-content">
+      <div class="field">
+        <p class="control">
+          <textarea class="textarea" id="text" name="text" rows="7" placeholder="Type your answer here." required></textarea>
+        </p>
+      </div>
+      <div class="field">
+        <p class="control">
+          <button type="submit" class="button">Submit</button>
+        </p>
+      </div>
+    </div>
+  </article>
 </form>
 {% else %}
-<p><a href="/accounts/login">Log in to answer this question</a></p>
+<p class="subtitle"><a href="/accounts/login">Log in to answer this question</a></p>
 {% endif %}
 
 </div>
+</article>
 
 {{ points|json_script:"points" }}
 {{ upvoted|json_script:"upvoted" }}
@@ -114,25 +122,26 @@ Vue.component('answer', {
   props: ['answer'],
   methods: {vote: vote},
   template: `
-  <div>
-    <hr class='answer-hr'/>
-    <div class='answer-block'>
-      <div class="answer-text" v-html="answer.text_html"></div>
-      <div class='text-secondary answer-sub'>
-        <span>[[ answer.user ]] <span v-if="answer.verified">✔</span>
-        <span class="separator">|</span>
-        <span>[[ answer.x_ago ]]</span>
-        <span class="separator">|</span>
-        <span v-if="answer.user != '{{current_user.username}}'">
-          <a href="javascript:void(0)" v-on:click="vote('upvote', answer.upvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.upvoted ? 'done' : '']]">upvote</a>
-          <span class="separator">|</span>
-          <a href="javascript:void(0)" v-on:click="vote('downvote', answer.downvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.downvoted ? 'done' : '']]">downvote</a>
-          <span class="separator">|</span>
-        </span>
-        <span>[[answer.points]] points</span>
+  <article class="media" style="margin-left: 50px">
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>[[ answer.user ]] <span v-if="answer.verified">✔</span></strong>
+          <small>[[answer.points]] points</small>
+          <br />
+          [[answer.text_html]]
+          <br />
+          <small>
+            <span v-if="answer.user != '{{current_user.username}}'">
+              <a href="javascript:void(0)" v-on:click="vote('upvote', answer.upvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.upvoted ? 'done' : '']]">upvote</a> · 
+              <a href="javascript:void(0)" v-on:click="vote('downvote', answer.downvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.downvoted ? 'done' : '']]">downvote</a> · 
+            </span>
+            [[ answer.x_ago ]]
+          </small>
+        </p>
       </div>
     </div>
-  </div>
+  </article>
   `
 })
 

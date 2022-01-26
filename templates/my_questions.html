@@ -2,11 +2,19 @@
 
 {% block content %}
 {% for question in questions %}
-    <p>
-        <a href="/question/{{question.id}}">{{ question.title }} <span class="text-secondary num-answers">({{ question.num_answers }} comments)</span></a>
-    </p>
+    <div class="card block">
+        <div class="card-content">
+            <p class="title" style="margin-bottom: 0;">{{ question.title }} </p>
+            <p style="margin-top: 0;">{{ question.num_answers }} comments</p>
+        </div>
+        <footer class="card-footer">
+            <p class="card-footer-item">
+                <span><a href="/question/{{question.id}}">Details</a> </span>
+            </p>
+        </footer>
+    </div>
 {% endfor %}
 {% if not questions_exist %}
-    <p>You haven't asked any questions yet.</p>
+    <p class="subtitle">You haven't asked any questions yet.</p>
 {% endif %}
 {% endblock %}

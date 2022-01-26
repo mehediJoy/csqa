@@ -2,23 +2,28 @@
 {% block content %}
 
 {% for question in page_obj %}
-    <p>
-        <a href="/question/{{question.id}}">{{ question.title }} <span class="text-secondary num-answers">({{ question.num_answers }} comments)</span></a>
-    </p>
+    <div class="card block">
+        <div class="card-content">
+            <p class="title">{{ question.title }}</p>
+        </div>
+        <footer class="card-footer">
+            <p class="card-footer-item">
+                <span><a href="/question/{{question.id}}">Comment</a> </span>
+            </p>
+        </footer>
+    </div>
 {% endfor %}
-<div class="pagination" style="margin-bottom: 3; margin-top: 10">
-    <span class="step-links">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination" style="margin-bottom: 10px;">
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">&laquo; previous</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="pagination-previous">Previous</a>
         {% endif %}
-
-        <span class="current text-secondary">
-            page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </span>
-
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next &raquo;</a>
+        <a href="?page={{ page_obj.next_page_number }}" class="pagination-next">Next page</a>
         {% endif %}
-    </span>
-</div>
+        <ul class="pagination-list">
+          <p>page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        </ul>
+    </nav>
 {% endblock %}
+
+
