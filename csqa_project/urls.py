@@ -4,7 +4,8 @@ from main.views import homeFeedView, testView, leaderboardView
 from pages.views import aboutPageView, searchView
 from questions.views import (questionView, newView, answerView,
                             myQuestionsView, myAnswersView, questionVoteView,
-                            answerVoteView)
+                            answerVoteView, questionReportView, questionReportConfirmView, 
+                            answerReportView, answerReportConfrimView)
 
 
 urlpatterns = [
@@ -22,4 +23,8 @@ urlpatterns = [
     path('question/new/', newView),
     path('question/my_answers/', myAnswersView, name='my-answers'),
     path('question/my_questions/', myQuestionsView, name='my-questions'),
+    path('question/<int:id>/report/', questionReportView, name='question-report'),
+    path('question/<int:id>/report/confirm/', questionReportConfirmView, name='question-report-confrim'),
+    path('answer/<int:id>/report/', answerReportView, name='answer-report'),
+    path('answer/<int:id>/report/confirm/', answerReportConfrimView, name='answer-report-confrim'),
 ]

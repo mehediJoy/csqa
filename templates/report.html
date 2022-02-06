@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-content">
+      <div class="content">
+        {% if typ == "question" %}
+        {{ obj.title }}
+        {% else %}
+        {{ obj.text }}
+        {% endif %}
+      </div>
+    </div>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+    <h3 class="subtitle">Do you want to report the content?</h3>
+    {% if typ == "question" %}
+    <a href="/question/{{obj.id}}/" class="button is-link">Go Back</a>
+    <a href="/question/{{obj.id}}/report/confirm/" class="button is-danger">Report</a>
+    {% else %}
+    <a href="/question/{{question.id}}/" class="button is-link">Go Back</a>
+    <a href="/answer/{{obj.id}}/report/confirm/" class="button is-danger">Report</a>
+    {% endif %}
+
+</div>
+
+{% endblock content %}

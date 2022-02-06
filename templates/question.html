@@ -16,12 +16,14 @@
       <br />
       {{ question.body | urlize }}
       <br />
+      <small>{{ question.x_ago }}</small>
+      <br>
       <small>
         {% if not asked_by_user %}
-        <a href="javascript:void(0)" v-on:click="vote('upvote', upvoted, '/question/{{question.id}}/vote')" :class="[[upvoted ? 'done' : '']]" class="text-secondary">upvote</a> · 
-        <a href="javascript:void(0)" v-on:click="vote('downvote', downvoted, '/question/{{question.id}}/vote')" :class="[[downvoted ? 'done' : '']]" class="text-secondary">downvote</a> ·
+        <a href="javascript:void(0)" v-on:click="vote('upvote', upvoted, '/question/{{question.id}}/vote')" :class="[[upvoted ? 'done' : '']]" class="text-secondary">Upvote</a> · 
+        <a href="javascript:void(0)" v-on:click="vote('downvote', downvoted, '/question/{{question.id}}/vote')" :class="[[downvoted ? 'done' : '']]" class="text-secondary">Downvote</a> ·
+        <a href="/question/{{question.id}}/report/" class="is-pulled-right">Report</a>
         {% endif %} 
-        {{ question.x_ago }}
       </small>
     </p>
   </div>
@@ -131,12 +133,13 @@ Vue.component('answer', {
           <br />
           [[answer.text_html]]
           <br />
+          <small>[[ answer.x_ago ]]</small>
           <small>
             <span v-if="answer.user != '{{current_user.username}}'">
-              <a href="javascript:void(0)" v-on:click="vote('upvote', answer.upvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.upvoted ? 'done' : '']]">upvote</a> · 
-              <a href="javascript:void(0)" v-on:click="vote('downvote', answer.downvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.downvoted ? 'done' : '']]">downvote</a> · 
+              <a href="javascript:void(0)" v-on:click="vote('upvote', answer.upvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.upvoted ? 'done' : '']]">Upvote</a> · 
+              <a href="javascript:void(0)" v-on:click="vote('downvote', answer.downvoted, '/answer/' + [[answer.id]] + '/vote')" class="text-secondary" :class="[[answer.downvoted ? 'done' : '']]">Downvote</a> ·
+              <a :href="'/answer/'+[[answer.id]]+'/report/'" class="is-pulled-right">Report</a>
             </span>
-            [[ answer.x_ago ]]
           </small>
         </p>
       </div>

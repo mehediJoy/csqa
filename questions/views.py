@@ -150,3 +150,28 @@ def myQuestionsView(request):
     return render(request, 'my_questions.html',
                   {'current_user': current_user, 'questions': questions,
                    'questions_exist': questions_exist})
+    
+def questionReportView(request, id):
+    current_user = request.user
+    question = Question.objects.get(pk=id)
+    return render(request, 'report.html', {'current_user': current_user,'obj': question, 'typ': "question"})
+    
+def questionReportConfirmView(request, id):
+    current_user = request.user
+    question = Question.objects.get(pk=id)
+    question.reported = True
+    question.save()
+    return render(request, 'report-confirm.html', {'current_user': current_user})
+
+def answerReportView(request, id):
+    current_user = request.user
+    answer = Answer.objects.get(pk=id)
+    question = answer.question
+    return render(request, 'report.html', {'current_user': current_user, 'obj': answer, 'typ': "answer", 'question': question})
+
+def answerReportConfrimView(request, id):
+    current_user = request.user
+    answer = Answer.objects.get(pk=id)
+    answer.reported = True
+    answer.save()
+    return render(request, 'report-confirm.html', {'current_user': current_user})

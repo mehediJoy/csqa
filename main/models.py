@@ -36,6 +36,7 @@ class Question(models.Model):
     answers_count = models.IntegerField(default=0)
     points = models.IntegerField(default=0)
     hidden = models.BooleanField(default=False)
+    reported = models.BooleanField(default=False)
 
     @property
     def num_answers(self):
@@ -75,6 +76,7 @@ class Answer(models.Model):
     points = models.IntegerField(default=0)
     hidden = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
+    reported = models.BooleanField(default=False)
     
     @property
     def x_ago(self):
